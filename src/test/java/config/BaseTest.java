@@ -1,63 +1,88 @@
 package config;
 
+import io.qameta.allure.Attachment;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
-import pages.CatalogPage;
-import pages.LoginPage;
-import pages.OrderPage;
-import properties.PropertiesProvider;
+import menuitems.LoginPage;
+import menuitems.orderitem.OrderPage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-/**
- * Created by Мужик on 01.02.2018.
- */
 public class BaseTest {
 
     protected LoginPage loginPage;
     protected WebDriver driver;
+    private SetWebDriver setWebDriver = new SetWebDriver();
+    private Logger log = Logger.getLogger(BaseTest.class);
+
     protected OrderPage orderPage;
-    private PropertiesProvider properties = new PropertiesProvider();
-    private String linkBasePage = properties.getMainPageURL();
-    private String linkAdminPage = properties.getAdminURL();
+    private String linkBasePage = PropertiesCollection.MAIN_PAGE_LINK;
+    private String linkAdminPage = PropertiesCollection.ADMIN_PAGE_LINK;
+
 
     public String linkBasePage() {
         return linkBasePage;
     }
 
+    @BeforeMethod
 
-
-
-    @BeforeClass
     public void initializeObject() {
-        driver = getWebDriver();
+        log.info("Starting before method ");
+        log.info("Initialization WebDriver");
+        driver = setWebDriver.getWebDriver();
         loginPage = new LoginPage(driver);
         orderPage = new OrderPage(driver);
         driver.manage().window().maximize();
+        log.info("Try to get page: " + linkAdminPage);
         driver.get(linkAdminPage);
     }
 
-    @AfterClass
-    public void quitWebDriver() {
+    @AfterTest
+    public void quitWebDriver(ITestContext testContext) {
+
+        log.info("The passed tests are: " + testContext.getPassedTests());
+        log.info("The failed tests are: " + testContext.getFailedTests());
+        log.info("Start afterMethod");
+
         driver.quit();
     }
 
-    @BeforeClass
-    private WebDriver getWebDriver() {
-
-        switch (properties.getBrowser()) {
-            case "chrome":
-                System.setProperty(
-                        "webdriver.chrome.driver",
-                        new File(BaseTest.class.getResource("/chromedriver.exe").getFile()).getPath());
-                return new ChromeDriver();
-                default:
-            case "firefox":
-                System.setProperty("webdriver.gecko.driver",
-                        new File(BaseTest.class.getResource("/geckodriver.exe").getFile()).getPath());
-                return new FirefoxDriver();
+    @AfterMethod
+    public void setScreenShop(ITestResult testResult) throws IOException {
+        if (testResult.getStatus() == ITestResult.FAILURE) {
+            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File("errorScreenshots/" + getNameOfErrorScreenShot(testResult) + ".jpg"));
+            captureErrorScreenShotToAllure(testResult);
         }
     }
+
+    @Attachment(value = "errorScreenShot", type = "image/jpg")
+    public byte[] captureErrorScreenShotToAllure(ITestResult testResult) {
+        try {
+            FileInputStream fin = new FileInputStream("errorScreenshots/" + getNameOfErrorScreenShot(testResult) + ".jpg");
+            return IOUtils.toByteArray(fin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+    }
+
+    private String getNameOfErrorScreenShot(ITestResult testResult) {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+            return ((testResult.getName() + " " + dateFormat.format(currentDate).replace(":", "-")));
+
+    }
+
 }

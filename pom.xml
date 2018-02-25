@@ -16,6 +16,7 @@
         <selenium.support>3.8.1</selenium.support>
         <firefox.versio>3.8.1</firefox.versio>
         <allure.gamleta.version>2.0-BETA21</allure.gamleta.version>
+        <log4j.version>1.2.8</log4j.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -47,6 +48,7 @@
         </plugins>
     </build>
     <dependencies>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -111,7 +113,11 @@
             <artifactId>testng</artifactId>
             <version>6.13.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
 
     </dependencies>
 </project>

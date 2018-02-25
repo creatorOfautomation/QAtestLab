@@ -29,7 +29,18 @@ public interface DescribeHelpers {
 
     public void waitUntilJSWorking();
 
+    public String randomString(int length);
 
+    public String randomPureString(int length);
 
+    public String randomEmail();
+
+    public String randomNumber(int length);
+
+    public String randomStringWithCharacters(int length);
+
+    public void getPage(String pageLink);
+
+    public String getTestName();
 
 }

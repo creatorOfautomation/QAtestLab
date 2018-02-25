@@ -3,6 +3,8 @@ package tests;
 import config.BaseTest;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+
 public class CatalogTests extends BaseTest {
 
     @Test
@@ -12,4 +14,5 @@ public class CatalogTests extends BaseTest {
                 .getProductSubPage()
                 .testAddNewProduct();
     }
+
 }

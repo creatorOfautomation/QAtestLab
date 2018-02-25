@@ -1,17 +1,17 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="GeneralTestSuit" verbose="1" thread-count="2" >
+<suite name="GeneralTestSuit" verbose="1" parallel="tests" thread-count="3" >
 
-    <parameter name="configFile" value="config.properties"/>
+    <!--<parameter name="configFile" value="config.properties"/>-->
     <test name="Regression2">
         <classes>
            <class name="tests.OrderTests"/>
         </classes>
     </test>
 
-    <test name="test2">
+    <!--<test name="test2">
         <classes>
             <class name="tests.CatalogTests"/>
         </classes>
-    </test>
+    </test>-->
 </suite>

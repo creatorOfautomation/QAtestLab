@@ -36,4 +36,7 @@ public class PropertiesProvider {
         return properties.getProperty("password.admin.page");
     }
 
+    public String getPathForLogDirectory() {
+        return properties.getProperty("log.path");
+    }
 }
