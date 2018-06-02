@@ -5,6 +5,10 @@ import config.PropertiesCollection;
 import menuitems.dashboarditem.DashBoardPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+import java.util.Set;
 
 public class ClientPage extends Helpers {
 
@@ -18,8 +22,9 @@ public class ClientPage extends Helpers {
     public static final By EMAIL_IN_DB = By.xpath("//*[@class=\"pointer\"][4]");
 
 
-    private String userFirstName = randomPureString(15);
-    private String userLastName = randomPureString(15);
+    private String[] newUserData = readFromExcel("RegistrData",1);
+    private String userFirstName = newUserData[0];
+    private String userLastName = newUserData[1];
     private String userEmail = randomEmail();
 
     public ClientPage(WebDriver driver) {
@@ -30,6 +35,8 @@ public class ClientPage extends Helpers {
 
     public ClientPage registrationNewUser () {
 
+        String[] ExcelData = readFromExcel("RegistrData", 1);
+        System.out.println(ExcelData[0]);
         getPage(PropertiesCollection.MAIN_PAGE_LINK);
         click(LOGIN_IN_BUTTON);
         click(SIGN_UP_BUTTON);
@@ -43,4 +50,5 @@ public class ClientPage extends Helpers {
 
         return this;
     }
+
 }

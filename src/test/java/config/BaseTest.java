@@ -60,20 +60,40 @@ public class BaseTest {
 
     @AfterMethod
     public void setScreenShop(ITestResult testResult) throws IOException {
+        String nameOfScreenshot = getNameOfErrorScreenShot(testResult);
+        log.debug("Try to capture error-screenshot");
         if (testResult.getStatus() == ITestResult.FAILURE) {
             File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File("errorScreenshots/" + getNameOfErrorScreenShot(testResult) + ".jpg"));
+            FileUtils.copyFile(scrFile, new File("errorScreenshots/" + nameOfScreenshot + ".jpg"));
+            captureLogFileToAllure();
             captureErrorScreenShotToAllure(testResult);
+
         }
+        log.debug("Successfully captured error-screenshot");
+        log.debug("The name of error-screenshot: " + nameOfScreenshot);
     }
 
     @Attachment(value = "errorScreenShot", type = "image/jpg")
-    public byte[] captureErrorScreenShotToAllure(ITestResult testResult) {
+    private byte[] captureErrorScreenShotToAllure(ITestResult testResult) {
         try {
+            log.debug("Try to attach error-screenshot to allure-report");
             FileInputStream fin = new FileInputStream("errorScreenshots/" + getNameOfErrorScreenShot(testResult) + ".jpg");
             return IOUtils.toByteArray(fin);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug("Something went wrong while trying to attach error-screenshot to allure-report");
+        }
+        return new byte[0];
+    }
+
+
+    @Attachment(value = "log", type = "text/log")
+    private byte[] captureLogFileToAllure() {
+        try {
+            log.debug("Try to attach log-file to allure-report");
+            FileInputStream fin = new FileInputStream("log/appLog.jpg");
+            return IOUtils.toByteArray(fin);
+        } catch (Exception e) {
+            log.debug("Something went wrong while trying to attach  log-file to allure-report");
         }
         return new byte[0];
     }
@@ -81,7 +101,7 @@ public class BaseTest {
     private String getNameOfErrorScreenShot(ITestResult testResult) {
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat();
-            return ((testResult.getName() + " " + dateFormat.format(currentDate).replace(":", "-")));
+        return ((testResult.getName() + " " + dateFormat.format(currentDate).replace(":", "-")));
 
     }
 

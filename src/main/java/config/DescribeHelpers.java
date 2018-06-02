@@ -3,9 +3,13 @@ package config;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 public interface DescribeHelpers {
 
     public WebElement findElement(By locator);
+
+    public List<WebElement> findElements(By locator);
 
     public void click(By element);
 
@@ -42,5 +46,9 @@ public interface DescribeHelpers {
     public void getPage(String pageLink);
 
     public String getTestName();
+
+    public void clearField(By element);
+
+    public String[] readFromExcel(String fileName, int row);
 
 }

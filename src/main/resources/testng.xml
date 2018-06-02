@@ -3,7 +3,7 @@
 <suite name="GeneralTestSuit" verbose="1" parallel="tests" thread-count="3" >
 
     <!--<parameter name="configFile" value="config.properties"/>-->
-    <test name="Regression2">
+    <test name="testMakeOrder">
         <classes>
            <class name="tests.OrderTests"/>
         </classes>
@@ -14,4 +14,5 @@
             <class name="tests.CatalogTests"/>
         </classes>
     </test>-->
+
 </suite>

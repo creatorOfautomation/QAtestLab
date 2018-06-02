@@ -9,6 +9,7 @@
 /allure-results/
 allure-results/
 log/
+/.idea/s
 /surefire-reports/
 target/
 

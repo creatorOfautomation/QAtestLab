@@ -39,4 +39,8 @@ public class PropertiesProvider {
     public String getPathForLogDirectory() {
         return properties.getProperty("log.path");
     }
+
+    public String getExcelDataPath() {
+        return properties.getProperty("registration.excel.data");
+    }
 }
