@@ -8,8 +8,7 @@ public class OrderTests extends BaseTest {
 
     @Test
     public void testMakeOrder () {
-        loginPage.loginInAdminPage()
-                .getOrderPage()
-                .testMakeOrder();
+        loginPage.loginInAdminPage();
+                orderPage.testMakeOrder();
     }
 }

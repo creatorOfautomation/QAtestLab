@@ -25,6 +25,12 @@ public interface DescribeHelpers {
 
     public void assertEquals(By element, String expectedValue);
 
+    public void softAssertEquals(By element, String expectedValue);
+
+    public void softAssertContainString(By element, String expectedValue);
+
+    public void assertAll();
+
     public String getText(By element);
 
     public String getText(WebElement element);

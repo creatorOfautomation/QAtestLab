@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-
+import org.assertj.core.api.SoftAssertions;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,6 +32,22 @@ public class Helpers extends DeclareGlobalVariable implements DescribeHelpers {
     public static final String CFE_LOG_MESSAGE = "Can't find element: ";
     public static final String ST_LOG_MESSAGE = " The stackTrace is here: ";
     private XSSFWorkbook workbook;
+    private SoftAssertions softAssertions = new SoftAssertions();
+
+    @Override
+    public void softAssertEquals(By element, String expectedValue) {
+        softAssertions.assertThat(getText(element).toUpperCase()).isEqualTo(expectedValue.toUpperCase());
+    }
+
+    @Override
+    public void softAssertContainString(By element, String expectedValue) {
+        softAssertions.assertThat(getText(element).toUpperCase()).contains(expectedValue.toUpperCase());
+    }
+
+    @Override
+    public void assertAll() {
+        softAssertions.assertAll();
+    }
 
     @Override
     @Step("Клик по элементу: {element}")
